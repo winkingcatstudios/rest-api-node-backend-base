@@ -66,13 +66,13 @@ mongoose
   .connect(devFiles.getMongoURI())
   .then((result) => {
     const server = app.listen(8080);
-    const websock = require("socket.io")(server, {
+    const websocket = require("./websocket").init(server, {
       cors: {
         origin: "http://localhost:3000",
         methods: ["GET", "POST"],
       },
     });
-    websock.on("connection", (socket) => {
+    websocket.on("connection", (socket) => {
       console.log("Client connected");
     });
   })
