@@ -65,7 +65,16 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(devFiles.getMongoURI())
   .then((result) => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    const websock = require("socket.io")(server, {
+      cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+      },
+    });
+    websock.on("connection", (socket) => {
+      console.log("Client connected");
+    });
   })
   .catch((err) => {
     console.log(err);
